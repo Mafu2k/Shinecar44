@@ -3,14 +3,6 @@
 
     const navbar = document.getElementById('mainNav');
 
-    window.addEventListener('scroll', function () {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
-    });
-
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
@@ -198,14 +190,6 @@
     const scrollTopBtn = document.getElementById('scrollTop');
 
     if (scrollTopBtn) {
-        window.addEventListener('scroll', function () {
-            if (window.scrollY > 500) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
         scrollTopBtn.addEventListener('click', function () {
             window.scrollTo({
                 top: 0,
@@ -215,17 +199,6 @@
     }
 
     const heroSection = document.querySelector('.hero-section');
-
-    if (heroSection) {
-        window.addEventListener('scroll', function () {
-            const scrolled = window.scrollY;
-            const parallaxSpeed = 0.5;
-
-            if (scrolled < window.innerHeight) {
-                heroSection.style.transform = `translateY(${scrolled * parallaxSpeed}px)`;
-            }
-        });
-    }
 
     const galleryItems = document.querySelectorAll('.gallery-item');
     const modal = document.getElementById('galleryModal');
@@ -240,7 +213,7 @@
             const image = this.getAttribute('data-image');
             const title = this.getAttribute('data-title');
             const vehicle = this.getAttribute('data-vehicle');
-            const services = this.getAttribute('data-services').split(',');
+            const services = (this.getAttribute('data-services') || '').split(',').filter(Boolean);
 
             modalImage.src = image;
             modalImage.alt = `${title} - ${vehicle}`;
@@ -360,29 +333,59 @@
     });
 
     const sections = document.querySelectorAll('section[id]');
+    const allNavLinks = document.querySelectorAll('.navbar-nav .nav-link');
+    const navLinkBySection = {};
+    sections.forEach(section => {
+        navLinkBySection[section.id] = document.querySelector(`.navbar-nav a[href="#${section.id}"]`);
+    });
 
-    window.addEventListener('scroll', function () {
+    // Jeden, dławiony przez requestAnimationFrame handler scrolla zamiast czterech osobnych nasłuchów.
+    let scrollTicking = false;
+
+    function handleScroll() {
         const scrollY = window.scrollY;
 
-        sections.forEach(section => {
-            const sectionHeight = section.offsetHeight;
-            const sectionTop = section.offsetTop - 100;
-            const sectionId = section.getAttribute('id');
-            const navLink = document.querySelector(`.navbar-nav a[href="#${sectionId}"]`);
+        // Tło navbaru po przewinięciu
+        if (navbar) {
+            navbar.classList.toggle('scrolled', scrollY > 50);
+        }
 
-            if (navLink && scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
-                document.querySelectorAll('.navbar-nav .nav-link').forEach(link => {
-                    link.classList.remove('active');
-                });
+        // Widoczność przycisku „do góry”
+        if (scrollTopBtn) {
+            scrollTopBtn.classList.toggle('visible', scrollY > 500);
+        }
+
+        // Parallax hero (tylko dopóki hero jest na ekranie)
+        if (heroSection && scrollY < window.innerHeight) {
+            heroSection.style.transform = `translateY(${scrollY * 0.5}px)`;
+        }
+
+        // Podświetlenie aktywnej sekcji w menu
+        sections.forEach(section => {
+            const top = section.offsetTop - 100;
+            const navLink = navLinkBySection[section.id];
+            if (navLink && scrollY > top && scrollY <= top + section.offsetHeight) {
+                allNavLinks.forEach(link => link.classList.remove('active'));
                 navLink.classList.add('active');
             }
         });
-    });
+
+        scrollTicking = false;
+    }
+
+    window.addEventListener('scroll', function () {
+        if (!scrollTicking) {
+            scrollTicking = true;
+            window.requestAnimationFrame(handleScroll);
+        }
+    }, { passive: true });
+
+    handleScroll();
 
     const yearElement = document.querySelector('.footer-bottom p');
     if (yearElement) {
         const currentYear = new Date().getFullYear();
-        yearElement.innerHTML = yearElement.innerHTML.replace('2024', currentYear);
+        yearElement.innerHTML = yearElement.innerHTML.replace(/20\d{2}/, currentYear);
     }
 
     if ('IntersectionObserver' in window) {
@@ -411,8 +414,3 @@
     });
 
 })();
-
-if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-    });
-}

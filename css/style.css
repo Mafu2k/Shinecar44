@@ -145,7 +145,7 @@ body {
     position: relative;
     height: 100vh;
     min-height: 700px;
-    background: linear-gradient(135deg, rgba(13, 13, 13, 0.7) 0%, rgba(26, 26, 26, 0.7) 100%), url('../zdjecia/tlo1.png') center center / cover no-repeat;
+    background: linear-gradient(135deg, rgba(13, 13, 13, 0.6) 0%, rgba(26, 26, 26, 0.68) 100%), url('../zdjecia/tlo1.png') center 30% / cover no-repeat;
     display: flex;
     align-items: center;
     overflow: hidden;
@@ -2008,7 +2008,7 @@ section {
         padding: 1.5rem;
     }
 }
-/* ¦¦¦ NOWY KALKULATOR WYCENY ¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦¦ */
+/* ï¿½ï¿½ï¿½ NOWY KALKULATOR WYCENY ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ */
 
 .calculator-form .service-category {
     font-size: 1rem;
