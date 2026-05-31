@@ -339,28 +339,23 @@
         navLinkBySection[section.id] = document.querySelector(`.navbar-nav a[href="#${section.id}"]`);
     });
 
-    // Jeden, dławiony przez requestAnimationFrame handler scrolla zamiast czterech osobnych nasłuchów.
     let scrollTicking = false;
 
     function handleScroll() {
         const scrollY = window.scrollY;
 
-        // Tło navbaru po przewinięciu
         if (navbar) {
             navbar.classList.toggle('scrolled', scrollY > 50);
         }
 
-        // Widoczność przycisku „do góry”
         if (scrollTopBtn) {
             scrollTopBtn.classList.toggle('visible', scrollY > 500);
         }
 
-        // Parallax hero (tylko dopóki hero jest na ekranie)
         if (heroSection && scrollY < window.innerHeight) {
             heroSection.style.transform = `translateY(${scrollY * 0.5}px)`;
         }
 
-        // Podświetlenie aktywnej sekcji w menu
         sections.forEach(section => {
             const top = section.offsetTop - 100;
             const navLink = navLinkBySection[section.id];

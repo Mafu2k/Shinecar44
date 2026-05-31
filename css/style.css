@@ -99,6 +99,13 @@ body {
     text-transform: uppercase;
 }
 
+.brand-logo {
+    height: 48px;
+    width: auto;
+    align-self: center;
+    display: block;
+}
+
 .navbar-nav .nav-link {
     color: var(--text-light) !important;
     font-weight: 500;
@@ -1560,6 +1567,10 @@ section {
         font-size: 1.5rem;
     }
 
+    .brand-logo {
+        height: 38px;
+    }
+
     .hero-main {
         font-size: 2rem;
     }
@@ -2008,7 +2019,6 @@ section {
         padding: 1.5rem;
     }
 }
-/* ��� NOWY KALKULATOR WYCENY ���������������������������������������� */
 
 .calculator-form .service-category {
     font-size: 1rem;
