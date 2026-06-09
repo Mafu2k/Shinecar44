@@ -152,7 +152,7 @@ body {
     position: relative;
     height: 100vh;
     min-height: 700px;
-    background: linear-gradient(135deg, rgba(13, 13, 13, 0.6) 0%, rgba(26, 26, 26, 0.68) 100%), url('../zdjecia/tlo1.png') center 30% / cover no-repeat;
+    background: linear-gradient(135deg, rgba(13, 13, 13, 0.58) 0%, rgba(26, 26, 26, 0.66) 100%), url('../zdjecia/tlo1.png') center center / cover no-repeat;
     display: flex;
     align-items: center;
     overflow: hidden;
