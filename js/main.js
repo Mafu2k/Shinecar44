@@ -25,6 +25,7 @@
     });
 
     const SERVICES = {
+        'svc-komplet':           { name: 'Komplet (odświeżenie wnętrza + mycie podstawowe)', min: 300, max: 500 },
         'svc-odswiezenie':       { name: 'Odświeżenie',            min: 150,  max: 300  },
         'svc-premium':           { name: 'Premium',                min: 250,  max: 600  },
         'svc-pranie-podstawowe': { name: 'Pranie podstawowe',      min: 150,  max: 400  },
@@ -184,6 +185,12 @@
             if (this.disabled) return;
             wrapper.classList.toggle('selected', this.checked);
             onCalcChange();
+        });
+    });
+
+    document.querySelectorAll('.calc-group-header').forEach(btn => {
+        btn.addEventListener('click', function () {
+            this.closest('.calc-group').classList.toggle('open');
         });
     });
 
