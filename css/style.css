@@ -686,18 +686,18 @@ section {
 }
 
 .calculator-section {
-    background: white;
+    background: var(--bg-light);
 }
 
 .calculator-wrapper {
-    background: var(--bg-light);
+    background: #ffffff;
     border-radius: 30px;
     padding: 3rem;
     box-shadow: var(--shadow-md);
 }
 
 .calculator-form {
-    background: white;
+    background: transparent;
     border-radius: 20px;
     padding: 2.5rem;
 }
@@ -1991,7 +1991,7 @@ section {
 }
 
 .calc-group.open .calc-group-body {
-    max-height: 600px;
+    max-height: 2200px;
     padding-bottom: 0.8rem;
 }
 
@@ -2031,7 +2031,7 @@ section {
 }
 .calculator-form .service-checkbox {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     padding: 0.75rem 1rem;
     border: 2px solid #e9ecef;
     border-radius: 10px;
@@ -2044,12 +2044,31 @@ section {
 .calculator-form .service-checkbox:hover { border-color: var(--primary-color); background: rgba(220,20,60,0.03); }
 .calculator-form .service-checkbox.selected { background: rgba(220,20,60,0.07); border-color: var(--primary-color); }
 .calculator-form .service-checkbox.service-required { background: rgba(220,20,60,0.05); border-color: rgba(220,20,60,0.4); }
-.calculator-form .service-checkbox input[type="checkbox"] { width:18px; height:18px; min-width:18px; accent-color: var(--primary-color); cursor:pointer; margin-right:0.75rem; }
-.calculator-form .service-checkbox label { display:flex; justify-content:space-between; align-items:center; width:100%; cursor:pointer; margin:0; gap:0.5rem; }
+.calculator-form .service-checkbox input[type="checkbox"] { width:18px; height:18px; min-width:18px; accent-color: var(--primary-color); cursor:pointer; margin-right:0.75rem; margin-top:0.2rem; }
+.calculator-form .service-checkbox label { display:flex; flex-direction:column; align-items:stretch; width:100%; cursor:pointer; margin:0; gap:0.3rem; }
+.svc-head { display:flex; justify-content:space-between; align-items:center; width:100%; gap:0.5rem; }
 .calculator-form .service-name { font-weight:600; color:var(--text-dark); font-size:0.95rem; display:flex; align-items:center; flex-wrap:wrap; gap:0.4rem; }
+.svc-desc { font-size:0.8rem; color:#6c757d; line-height:1.45; font-weight:400; }
+.svc-price { font-weight:700; color:var(--primary-color); font-size:0.85rem; white-space:nowrap; }
 .required-note { font-size:0.72rem; color:var(--primary-color); font-weight:600; background:rgba(220,20,60,0.1); padding:0.15rem 0.5rem; border-radius:20px; display:inline-flex; align-items:center; gap:0.3rem; margin-left:0.3rem; }
 .req-badge { font-size:0.72rem; color:var(--primary-color); font-weight:600; background:rgba(220,20,60,0.1); padding:0.1rem 0.4rem; border-radius:20px; }
 .svc-range { font-weight:700; color:var(--primary-color); font-size:0.88rem; white-space:nowrap; }
 #totalPrice { font-size:1.1rem; font-weight:800; color:var(--primary-color); }
 #selectedServices li { display:flex; justify-content:space-between; align-items:baseline; padding:0.4rem 0; border-bottom:1px solid #f0f0f0; gap:0.5rem; flex-wrap:wrap; font-size:0.9rem; }
 #selectedServices li:last-child { border-bottom:none; }
+
+.calc-size { margin-bottom: 1.2rem; }
+.calc-size-title { display:flex; align-items:center; gap:0.6rem; font-size:1rem; font-weight:700; color:var(--primary-color); text-transform:uppercase; letter-spacing:1px; margin-bottom:0.8rem; }
+.calc-size-options { display:grid; grid-template-columns:repeat(3, 1fr); gap:0.6rem; }
+.calc-size-option { display:flex; flex-direction:column; gap:0.25rem; text-align:left; padding:0.9rem 1rem; border:2px solid #e9ecef; border-radius:12px; background:#fff; cursor:pointer; transition:all 0.2s ease; }
+.calc-size-option:hover { border-color:var(--primary-color); }
+.calc-size-option.active { border-color:var(--primary-color); background:rgba(220,20,60,0.07); }
+.calc-size-name { font-weight:700; color:var(--text-dark); font-size:0.95rem; }
+.calc-size-desc { font-size:0.75rem; color:#6c757d; line-height:1.4; }
+
+.summary-size-row { display:flex; justify-content:space-between; align-items:center; gap:0.5rem; padding:0.8rem 1rem; margin-bottom:1.5rem; background:rgba(255,255,255,0.1); border-radius:10px; font-size:0.95rem; }
+.summary-size-row span:last-child { font-weight:700; color:var(--primary-color); }
+
+@media (max-width: 480px) {
+    .calc-size-options { grid-template-columns:1fr; }
+}

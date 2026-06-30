@@ -35,7 +35,7 @@
                     <li class="nav-item"><a class="nav-link" href="#reviews">Opinie</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">O nas</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Kontakt</a></li>
-                    <li class="nav-item"><a class="btn btn-primary nav-btn" href="#booking">Umów wizytę</a></li>
+                    <li class="nav-item"><a class="btn btn-primary nav-btn" href="tel:+48537897951">Zadzwoń</a></li>
                 </ul>
             </div>
         </div>
@@ -57,7 +57,7 @@
                             czyszczenie wnętrza i wiele więcej. Przywróć swojemu samochodowi blask salonu.
                         </p>
                         <div class="hero-buttons">
-                            <a href="#booking" class="btn btn-primary btn-lg">Umów wizytę</a>
+                            <a href="tel:+48537897951" class="btn btn-primary btn-lg">Zadzwoń</a>
                             <a href="#calculator" class="btn btn-outline-light btn-lg">Kalkulator cen</a>
                         </div>
                         <div class="hero-features">
@@ -70,8 +70,8 @@
                                 <span>Korekta lakieru</span>
                             </div>
                             <div class="feature-item">
-                                <i class="fas fa-leaf"></i>
-                                <span>Eko technologie</span>
+                                <i class="fas fa-couch"></i>
+                                <span>Pranie tapicerki</span>
                             </div>
                         </div>
                     </div>
@@ -153,6 +153,7 @@
                             <li><i class="fas fa-check"></i> Eliminacja rys, hologramów i matowień</li>
                             <li><i class="fas fa-check"></i> Głęboki, showroomowy połysk</li>
                             <li><i class="fas fa-check"></i> Korekcja dopasowana do stanu lakieru</li>
+                            <li><i class="fas fa-check"></i> Renowacja reflektorów w pakiecie</li>
                         </ul>
                         <a href="#calculator" class="service-link">Wycena <i class="fas fa-arrow-right"></i></a>
                     </div>
@@ -175,12 +176,12 @@
                 <div class="col-lg-4 col-md-6">
                     <div class="service-card">
                         <div class="service-icon"><i class="fas fa-film"></i></div>
-                        <h3 class="service-title">Folia PPF</h3>
-                        <p class="service-description">Niewidzialna folia ochronna Paint Protection Film — zabezpiecza lakier przed kamieniami, zarysowaniami i czynnikami zewnętrznymi.</p>
+                        <h3 class="service-title">Folie</h3>
+                        <p class="service-description">Folia ochronna PPF zabezpieczająca lakier oraz folia winylowa do zmiany koloru i dechromingu — pełna personalizacja auta.</p>
                         <ul class="service-features">
-                            <li><i class="fas fa-check"></i> Ochrona przed kamieniami</li>
-                            <li><i class="fas fa-check"></i> Samoregenerujące właściwości</li>
-                            <li><i class="fas fa-check"></i> Wieloletnia trwałość</li>
+                            <li><i class="fas fa-check"></i> Ochrona przed kamieniami i odpryskami</li>
+                            <li><i class="fas fa-check"></i> Samoregenerujące właściwości PPF</li>
+                            <li><i class="fas fa-check"></i> Zmiana koloru i dechroming</li>
                         </ul>
                         <a href="#calculator" class="service-link">Wycena indywidualna <i class="fas fa-arrow-right"></i></a>
                     </div>
@@ -216,10 +217,19 @@
                     <div class="col-lg-7">
                         <div class="calculator-form">
 
+                            <div class="calc-size">
+                                <span class="calc-size-title"><i class="fas fa-car-side"></i> Rozmiar auta</span>
+                                <div class="calc-size-options">
+                                    <button type="button" class="calc-size-option" data-size="maly"><span class="calc-size-name">Małe</span><span class="calc-size-desc">Auta miejskie, np. Škoda Citigo, VW up!</span></button>
+                                    <button type="button" class="calc-size-option" data-size="sredni"><span class="calc-size-name">Średnie</span><span class="calc-size-desc">5-drzwiowe, coupé, sedany, hatchbacki</span></button>
+                                    <button type="button" class="calc-size-option" data-size="duzy"><span class="calc-size-name">Duże</span><span class="calc-size-desc">SUV-y i auta terenowe</span></button>
+                                </div>
+                            </div>
+
                             <div class="calc-group">
                                 <button type="button" class="calc-group-header"><span><i class="fas fa-box-open"></i> Zestawy</span><i class="fas fa-chevron-down calc-group-arrow"></i></button>
                                 <div class="calc-group-body">
-                                    <div class="service-checkbox" id="cb-komplet"><input type="checkbox" id="svc-komplet"><label for="svc-komplet"><span class="service-name">Komplet — odświeżenie wnętrza + mycie podstawowe</span></label></div>
+                                    <div class="service-checkbox" id="cb-komplet"><input type="checkbox" id="svc-komplet"><label for="svc-komplet"><span class="service-name">Komplet</span></label></div>
                                 </div>
                             </div>
 
@@ -264,9 +274,10 @@
                             </div>
 
                             <div class="calc-group">
-                                <button type="button" class="calc-group-header"><span><i class="fas fa-film"></i> Folia PPF</span><i class="fas fa-chevron-down calc-group-arrow"></i></button>
+                                <button type="button" class="calc-group-header"><span><i class="fas fa-film"></i> Folia</span><i class="fas fa-chevron-down calc-group-arrow"></i></button>
                                 <div class="calc-group-body">
                                     <div class="service-checkbox" id="cb-ppf"><input type="checkbox" id="svc-ppf"><label for="svc-ppf"><span class="service-name">Folia PPF</span></label></div>
+                                    <div class="service-checkbox" id="cb-folia-winyl"><input type="checkbox" id="svc-folia-winyl"><label for="svc-folia-winyl"><span class="service-name">Folia winylowa — zmiana koloru / dechroming</span></label></div>
                                 </div>
                             </div>
 
@@ -281,6 +292,10 @@
                     <div class="col-lg-5">
                         <div class="calculator-summary">
                             <h3>Podsumowanie</h3>
+                            <div class="summary-size-row">
+                                <span><i class="fas fa-car-side"></i> Rozmiar auta:</span>
+                                <span id="summarySize">Średnie</span>
+                            </div>
                             <div class="summary-services">
                                 <h4>Wybrane usługi:</h4>
                                 <ul id="selectedServices">
@@ -541,8 +556,8 @@
                             <div class="about-feature">
                                 <i class="fas fa-check-circle"></i>
                                 <div>
-                                    <h4>Ekologiczne podejście</h4>
-                                    <p>Dbamy o środowisko i Twój samochód</p>
+                                    <h4>Indywidualne podejście</h4>
+                                    <p>Do każdego auta podchodzimy jak do własnego</p>
                                 </div>
                             </div>
                         </div>
@@ -637,8 +652,8 @@
                             <li><a href="#services">Korekta lakieru</a></li>
                             <li><a href="#services">Ochrona ceramiczna</a></li>
                             <li><a href="#services">Czyszczenie wnętrza</a></li>
-                            <li><a href="#services">Mycie parowe</a></li>
-                            <li><a href="#services">Renowacja reflektorów</a></li>
+                            <li><a href="#services">Folia ochronna PPF</a></li>
+                            <li><a href="#services">Pranie tapicerki</a></li>
                         </ul>
                     </div>
                 </div>
@@ -685,8 +700,8 @@
                         </ul>
                     </div>
 
-                    <a href="#booking" class="btn btn-primary modal-booking-btn">
-                        Umów podobną usługę <i class="fas fa-arrow-right"></i>
+                    <a href="tel:+48537897951" class="btn btn-primary modal-booking-btn">
+                        Zadzwoń po wycenę <i class="fas fa-phone"></i>
                     </a>
                 </div>
             </div>

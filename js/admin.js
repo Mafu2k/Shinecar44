@@ -229,7 +229,7 @@
                             ${promo.oldPrice ? `<span class="promotion-old-price">${promo.oldPrice} zł</span>` : ''}
                             <span class="promotion-new-price">${promo.newPrice} zł</span>
                         </div>
-                        <a href="#booking" class="promotion-btn">Rezerwuj</a>
+                        <a href="#contact" class="promotion-btn">Kontakt</a>
                     </div>
                 </div>
             </div>

@@ -25,25 +25,34 @@
     });
 
     const SERVICES = {
-        'svc-komplet':           { name: 'Komplet (odświeżenie wnętrza + mycie podstawowe)', min: 300, max: 500 },
-        'svc-odswiezenie':       { name: 'Odświeżenie',            min: 150,  max: 300  },
-        'svc-premium':           { name: 'Premium',                min: 250,  max: 600  },
-        'svc-pranie-podstawowe': { name: 'Pranie podstawowe',      min: 150,  max: 400  },
-        'svc-pranie-pelne':      { name: 'Pranie pełne',           min: 450,  max: 1200 },
-        'svc-czyszczenie-skor':  { name: 'Czyszczenie skór',       min: 150,  max: 550  },
-        'svc-mycie-podstawowe':  { name: 'Mycie podstawowe',       min: 150,  max: 200  },
-        'svc-mycie-premium':     { name: 'Mycie premium',          min: 250,  max: 600  },
-        'svc-dekontaminacja':    { name: 'Dekontaminacja lakieru', min: 350,  max: 800  },
-        'svc-felgi':             { name: 'Felgi +',                min: 100,  max: 250  },
-        'svc-pol-1step':         { name: 'Polerowanie 1-step',     min: 400,  max: 800  },
-        'svc-pol-2step':         { name: 'Polerowanie 2-step',     min: 700,  max: 1300 },
-        'svc-pelna-korekta':     { name: 'Pełna korekta',          min: 900,  max: 2000 },
-        'svc-wosk':              { name: 'Wosk',                   min: 200,  max: 350  },
-        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',     min: 300,  max: 600  },
-        'svc-powloka-3':         { name: 'Powłoka 3-letnia',       min: 500,  max: 750  },
-        'svc-powloka-5':         { name: 'Powłoka 5-letnia',       min: 600,  max: 900  },
-        'svc-ppf':               { name: 'Folia PPF',               min: 0,    max: 0, individual: true },
+        'svc-komplet':           { name: 'Komplet',               min: 250,  max: 350,  sizeBased: true, desc: 'Odświeżenie wnętrza i mycie podstawowe nadwozia w jednym pakiecie. Cena zależna od rozmiaru auta.' },
+        'svc-odswiezenie':       { name: 'Odświeżenie',           min: 150,  max: 200,  desc: 'Odkurzanie, przetarcie plastików, mycie szyb i kokpitu — wnętrze schludne i świeże.' },
+        'svc-premium':           { name: 'Premium',               min: 250,  max: 600,  desc: 'Dogłębne czyszczenie całego wnętrza: detale, szczeliny, plastiki, podsufitka i dezynfekcja.' },
+        'svc-pranie-podstawowe': { name: 'Pranie podstawowe',     min: 250,  max: 400,  desc: 'Pranie ekstrakcyjne foteli lub dywaników w wybranych strefach.' },
+        'svc-pranie-pelne':      { name: 'Pranie pełne',          min: 450,  max: 1200, desc: 'Pranie ekstrakcyjne całej tapicerki, dywanów i boczków — usuwa plamy i zapachy.' },
+        'svc-czyszczenie-skor':  { name: 'Czyszczenie skór',      min: 150,  max: 550,  desc: 'Czyszczenie i pielęgnacja tapicerki skórzanej dedykowanymi preparatami.' },
+        'svc-mycie-podstawowe':  { name: 'Mycie podstawowe',      min: 100,  max: 200,  desc: 'Bezpieczne mycie ręczne nadwozia, felg i szyb wraz z osuszeniem.' },
+        'svc-mycie-premium':     { name: 'Mycie premium',         min: 250,  max: 600,  desc: 'Mycie detailingowe z dekontaminacją wstępną i woskiem w sprayu.' },
+        'svc-dekontaminacja':    { name: 'Dekontaminacja lakieru', min: 350, max: 800,  desc: 'Usunięcie zanieczyszczeń wżartych w lakier (smoła, opad, glinkowanie) — baza pod korektę i powłoki.' },
+        'svc-felgi':             { name: 'Felgi +',               min: 100,  max: 250,  desc: 'Dokładne czyszczenie felg z wewnętrznej strony i ich zabezpieczenie.' },
+        'svc-pol-1step':         { name: 'Polerowanie 1-step',    min: 400,  max: 800,  desc: 'Jednoetapowa korekta lakieru — redukcja drobnych rys i matu, wyraźna poprawa połysku.' },
+        'svc-pol-2step':         { name: 'Polerowanie 2-step',    min: 850,  max: 1300, desc: 'Dwuetapowa korekta — usunięcie głębszych rys i hologramów, mocny efekt lustra.' },
+        'svc-pelna-korekta':     { name: 'Pełna korekta',         min: 900,  max: 2000, desc: 'Wieloetapowa korekta przywracająca maksymalny połysk; w pakiecie renowacja reflektorów.' },
+        'svc-wosk':              { name: 'Wosk',                  min: 150,  max: 350,  desc: 'Naturalny lub syntetyczny wosk dający połysk i kilkumiesięczną ochronę.' },
+        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',    min: 50,   max: 600,  desc: 'Powłoka ceramiczna z ochroną ok. 1,5 roku — efekt hydrofobowy i głębia lakieru.' },
+        'svc-powloka-3':         { name: 'Powłoka 3-letnia',      min: 500,  max: 750,  desc: 'Powłoka ceramiczna z ochroną do 3 lat — trwała hydrofobowość i twardość.' },
+        'svc-powloka-5':         { name: 'Powłoka 5-letnia',      min: 600,  max: 900,  desc: 'Powłoka ceramiczna z ochroną do 5 lat — najwyższa trwałość i odporność.' },
+        'svc-ppf':               { name: 'Folia PPF',             min: 0,    max: 0, individual: true, desc: 'Bezbarwna folia ochronna chroniąca lakier przed odpryskami i rysami.' },
+        'svc-folia-winyl':       { name: 'Folia winylowa',        min: 0,    max: 0, individual: true, desc: 'Zmiana koloru auta lub dechroming folią winylową.' },
     };
+
+    const SIZES = {
+        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 } },
+        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 } },
+        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 } },
+    };
+
+    let currentSize = 'sredni';
 
     const REQUIRES = {
         'svc-pranie-podstawowe': ['svc-premium'],
@@ -65,6 +74,60 @@
 
     function getWrapperId(svcId) {
         return 'cb-' + svcId.replace('svc-', '');
+    }
+
+    function priceLabel(svc) {
+        return svc.individual ? 'Wycena indyw.' : `${svc.min}–${svc.max} zł`;
+    }
+
+    function decorateServices() {
+        Object.keys(SERVICES).forEach(id => {
+            const wrapper = document.getElementById(getWrapperId(id));
+            if (!wrapper) return;
+
+            const label = wrapper.querySelector('label');
+            const name = label.querySelector('.service-name');
+            if (!name || label.querySelector('.svc-head')) return;
+
+            const head = document.createElement('span');
+            head.className = 'svc-head';
+            label.insertBefore(head, name);
+            head.appendChild(name);
+
+            const price = document.createElement('span');
+            price.className = 'svc-price';
+            price.textContent = priceLabel(SERVICES[id]);
+            head.appendChild(price);
+
+            if (SERVICES[id].desc) {
+                const desc = document.createElement('span');
+                desc.className = 'svc-desc';
+                desc.textContent = SERVICES[id].desc;
+                label.appendChild(desc);
+            }
+        });
+    }
+
+    function applySize(size) {
+        if (!SIZES[size]) return;
+        currentSize = size;
+
+        document.querySelectorAll('.calc-size-option').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.size === size);
+        });
+
+        const komplet = SERVICES['svc-komplet'];
+        komplet.min = SIZES[size].komplet.min;
+        komplet.max = SIZES[size].komplet.max;
+
+        const badge = document.querySelector('#cb-komplet .svc-price');
+        if (badge) badge.textContent = priceLabel(komplet);
+
+        const sizeLabel = document.getElementById('summarySize');
+        if (sizeLabel) sizeLabel.textContent = SIZES[size].label;
+
+        updateSummary();
+        updatePrice();
     }
 
     function updateDependencies() {
@@ -125,7 +188,7 @@
                 const cb = document.getElementById(id);
                 const isReq = cb && cb.disabled;
                 const badge = isReq ? ' <small class="req-badge"><i class="fas fa-lock"></i> wymagane</small>' : '';
-                const priceStr = svc.individual ? 'Wycena indyw.' : `${svc.min}–${svc.max} zł`;
+                const priceStr = priceLabel(svc);
                 return `<li>
                     <span>${svc.name}${badge}</span>
                     <span class="svc-range">${priceStr}</span>
@@ -193,6 +256,15 @@
             this.closest('.calc-group').classList.toggle('open');
         });
     });
+
+    document.querySelectorAll('.calc-size-option').forEach(btn => {
+        btn.addEventListener('click', function () {
+            applySize(this.dataset.size);
+        });
+    });
+
+    decorateServices();
+    applySize(currentSize);
 
     const scrollTopBtn = document.getElementById('scrollTop');
 
