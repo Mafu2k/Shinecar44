@@ -524,18 +524,33 @@
         const statusEl = document.getElementById('cfStatus');
         const servicesField = document.getElementById('cfServices');
         const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const quoteBox = document.getElementById('cfQuoteBox');
+        const quoteText = document.getElementById('cfQuoteText');
+        const attachBtn = document.getElementById('attachQuoteBtn');
+        const attachHint = document.getElementById('attachQuoteHint');
+        const removeQuoteBtn = document.getElementById('cfQuoteRemove');
         const PHONE = '+48 537 897 951';
 
-        function collectQuote() {
-            if (!servicesField) return;
+        function buildQuoteText() {
             const items = Array.from(document.querySelectorAll('#selectedServices li'))
                 .map(li => li.textContent.replace(/\s+/g, ' ').trim())
                 .filter(text => text && !/Brak wybranych/i.test(text));
+            if (!items.length) return '';
             const total = (document.getElementById('totalPrice') || {}).textContent || '';
             const size = (document.getElementById('summarySize') || {}).textContent || '';
-            servicesField.value = items.length
-                ? `Rozmiar auta: ${size}\n- ${items.join('\n- ')}\nWycena: ${total}`
-                : 'Klient nie skorzystał z kalkulatora.';
+            return `Rozmiar auta: ${size}\n- ${items.join('\n- ')}\nWycena: ${total}`;
+        }
+
+        function showQuote(text) {
+            if (servicesField) servicesField.value = text;
+            if (quoteText) quoteText.textContent = text;
+            if (quoteBox) quoteBox.hidden = false;
+        }
+
+        function clearQuote() {
+            if (servicesField) servicesField.value = '';
+            if (quoteText) quoteText.textContent = '';
+            if (quoteBox) quoteBox.hidden = true;
         }
 
         function setStatus(message, type) {
@@ -544,9 +559,38 @@
             statusEl.className = 'contact-status' + (type ? ' is-' + type : '');
         }
 
+        function setHint(message) {
+            if (!attachHint) return;
+            attachHint.textContent = message || '';
+            attachHint.classList.toggle('is-visible', !!message);
+        }
+
+        if (attachBtn) {
+            attachBtn.addEventListener('click', function () {
+                const text = buildQuoteText();
+                if (!text) {
+                    setHint('Najpierw zaznacz usługi w kalkulatorze.');
+                    return;
+                }
+                setHint('');
+                showQuote(text);
+                contactForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                window.setTimeout(function () {
+                    const nameField = document.getElementById('cfName');
+                    if (nameField) nameField.focus();
+                }, 450);
+            });
+        }
+
+        if (removeQuoteBtn) {
+            removeQuoteBtn.addEventListener('click', clearQuote);
+        }
+
         contactForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            collectQuote();
+            if (servicesField && !servicesField.value) {
+                servicesField.value = buildQuoteText() || 'Klient nie skorzystał z kalkulatora.';
+            }
 
             const original = submitBtn.innerHTML;
             submitBtn.disabled = true;
@@ -564,6 +608,7 @@
                 if (response.ok && data.success) {
                     setStatus('Dziękujemy! Wiadomość wysłana — odezwiemy się wkrótce.', 'success');
                     contactForm.reset();
+                    clearQuote();
                 } else {
                     setStatus((data && data.message) || `Nie udało się wysłać. Zadzwoń: ${PHONE}.`, 'error');
                 }

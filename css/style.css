@@ -2102,6 +2102,20 @@ section {
 .contact-status.is-success { color: #1e7e34; }
 .contact-status.is-error { color: var(--primary-color); }
 
+/* Przycisk „Zapytaj o tę wycenę" w podsumowaniu kalkulatora */
+.calc-attach-btn { margin-top: 1rem; text-align: center; }
+.calc-attach-hint { display: none; margin-top: 0.5rem; font-size: 0.85rem; font-weight: 600; color: #ffd7d0; }
+.calc-attach-hint.is-visible { display: block; }
+.calc-call-btn { border: 2px solid rgba(255, 255, 255, 0.5); color: #fff; background: transparent; padding: 0.85rem 1rem; border-radius: 50px; font-weight: 600; transition: all 0.2s ease; }
+.calc-call-btn:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+/* Widoczny box z dołączoną wyceną w formularzu */
+.contact-quote { border: 1px solid #e9ecef; background: #f8f9fa; border-radius: 12px; padding: 1rem 1.2rem; margin-bottom: 1.2rem; }
+.contact-quote-head { display: flex; justify-content: space-between; align-items: center; gap: 0.5rem; font-weight: 700; color: var(--primary-color); font-size: 0.9rem; margin-bottom: 0.5rem; }
+.contact-quote-remove { background: none; border: none; color: #6c757d; font-size: 1.4rem; line-height: 1; cursor: pointer; padding: 0 0.3rem; }
+.contact-quote-remove:hover { color: var(--primary-color); }
+.contact-quote-text { margin: 0; font-family: inherit; font-size: 0.85rem; color: var(--text-dark); white-space: pre-wrap; line-height: 1.5; }
+
 @media (max-width: 576px) {
     .contact-form-wrapper { padding: 1.5rem; }
 }

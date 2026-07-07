@@ -13,7 +13,7 @@
 
 
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/style.css?v=1.0.14">
+    <link rel="stylesheet" href="css/style.css?v=1.0.15">
     <link rel="stylesheet" href="fontawesome/css/all.min.css">
 </head>
 
@@ -310,7 +310,11 @@
                                 <i class="fas fa-info-circle"></i>
                                 Cena orientacyjna. Dokładna wycena po oględzinach pojazdu.
                             </p>
-                            <a href="tel:+48537897951" class="btn btn-primary btn-block" style="text-align:center; display:block; margin-top:1rem;">
+                            <button type="button" id="attachQuoteBtn" class="btn btn-primary btn-block calc-attach-btn">
+                                <i class="fas fa-paper-plane"></i> Zapytaj o tę wycenę
+                            </button>
+                            <span id="attachQuoteHint" class="calc-attach-hint" role="status" aria-live="polite"></span>
+                            <a href="tel:+48537897951" class="btn btn-block calc-call-btn" style="text-align:center; display:block; margin-top:0.6rem;">
                                 <i class="fas fa-phone"></i> Zadzwoń po wycenę
                             </a>
                         </div>
@@ -630,6 +634,13 @@
                                 <textarea id="cfMessage" name="message" class="form-control" rows="4" required></textarea>
                             </div>
                             <input type="hidden" id="cfServices" name="Wycena z kalkulatora">
+                            <div id="cfQuoteBox" class="contact-quote" hidden>
+                                <div class="contact-quote-head">
+                                    <span><i class="fas fa-calculator"></i> Twoja wycena z kalkulatora</span>
+                                    <button type="button" id="cfQuoteRemove" class="contact-quote-remove" aria-label="Usuń dołączoną wycenę">&times;</button>
+                                </div>
+                                <pre id="cfQuoteText" class="contact-quote-text"></pre>
+                            </div>
                             <div class="contact-consent">
                                 <input type="checkbox" id="cfConsent" required>
                                 <label for="cfConsent">Wyrażam zgodę na przetwarzanie moich danych w celu odpowiedzi na zapytanie.</label>
@@ -756,7 +767,7 @@
     </button>
 
     <script src="js/bootstrap.bundle.min.js"></script>
-    <script src="js/main.js?v=1.0.14"></script>
+    <script src="js/main.js?v=1.0.15"></script>
 </body>
 
 </html>
