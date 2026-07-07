@@ -39,7 +39,7 @@
         'svc-pol-2step':         { name: 'Polerowanie 2-step',    min: 850,  max: 1300, desc: 'Dwuetapowa korekta — usunięcie głębszych rys i hologramów, mocny efekt lustra.' },
         'svc-pelna-korekta':     { name: 'Pełna korekta',         min: 900,  max: 2000, desc: 'Wieloetapowa korekta przywracająca maksymalny połysk; w pakiecie renowacja reflektorów.' },
         'svc-wosk':              { name: 'Wosk',                  min: 150,  max: 350,  desc: 'Naturalny lub syntetyczny wosk dający połysk i kilkumiesięczną ochronę.' },
-        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',    min: 50,   max: 600,  desc: 'Powłoka ceramiczna z ochroną ok. 1,5 roku — efekt hydrofobowy i głębia lakieru.' },
+        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',    min: 150,  max: 600,  desc: 'Powłoka ceramiczna z ochroną ok. 1,5 roku — efekt hydrofobowy i głębia lakieru.' },
         'svc-powloka-3':         { name: 'Powłoka 3-letnia',      min: 500,  max: 750,  desc: 'Powłoka ceramiczna z ochroną do 3 lat — trwała hydrofobowość i twardość.' },
         'svc-powloka-5':         { name: 'Powłoka 5-letnia',      min: 600,  max: 900,  desc: 'Powłoka ceramiczna z ochroną do 5 lat — najwyższa trwałość i odporność.' },
         'svc-ppf':               { name: 'Folia PPF',             min: 0,    max: 0, individual: true, desc: 'Bezbarwna folia ochronna chroniąca lakier przed odpryskami i rysami.' },
@@ -66,6 +66,16 @@
         'svc-powloka-3':         ['svc-dekontaminacja', 'svc-pelna-korekta'],
         'svc-powloka-5':         ['svc-dekontaminacja', 'svc-pelna-korekta'],
     };
+
+    const EXCLUSIVE_GROUPS = [
+        ['svc-odswiezenie', 'svc-premium'],
+        ['svc-pranie-podstawowe', 'svc-pranie-pelne'],
+        ['svc-mycie-podstawowe', 'svc-mycie-premium'],
+        ['svc-pol-1step', 'svc-pol-2step', 'svc-pelna-korekta'],
+        ['svc-wosk', 'svc-powloka-15', 'svc-powloka-3', 'svc-powloka-5'],
+    ];
+
+    let lastChangedId = null;
 
     function isChecked(id) {
         const el = document.getElementById(id);
@@ -94,11 +104,6 @@
             label.insertBefore(head, name);
             head.appendChild(name);
 
-            const price = document.createElement('span');
-            price.className = 'svc-price';
-            price.textContent = priceLabel(SERVICES[id]);
-            head.appendChild(price);
-
             if (SERVICES[id].desc) {
                 const desc = document.createElement('span');
                 desc.className = 'svc-desc';
@@ -119,9 +124,6 @@
         const komplet = SERVICES['svc-komplet'];
         komplet.min = SIZES[size].komplet.min;
         komplet.max = SIZES[size].komplet.max;
-
-        const badge = document.querySelector('#cb-komplet .svc-price');
-        if (badge) badge.textContent = priceLabel(komplet);
 
         const sizeLabel = document.getElementById('summarySize');
         if (sizeLabel) sizeLabel.textContent = SIZES[size].label;
@@ -221,7 +223,35 @@
         }
     }
 
+    function enforceExclusivity() {
+        EXCLUSIVE_GROUPS.forEach(group => {
+            const checkedInGroup = group.filter(id => isChecked(id));
+            if (checkedInGroup.length <= 1) return;
+
+            let keep = checkedInGroup.find(id => {
+                const cb = document.getElementById(id);
+                return cb && cb.disabled;
+            });
+            if (!keep) {
+                keep = checkedInGroup.includes(lastChangedId)
+                    ? lastChangedId
+                    : checkedInGroup[checkedInGroup.length - 1];
+            }
+
+            checkedInGroup.forEach(id => {
+                if (id === keep) return;
+                const cb = document.getElementById(id);
+                if (!cb || cb.disabled) return;
+                cb.checked = false;
+                const wrapper = document.getElementById(getWrapperId(id));
+                if (wrapper) wrapper.classList.remove('selected');
+            });
+        });
+    }
+
     function onCalcChange() {
+        updateDependencies();
+        enforceExclusivity();
         updateDependencies();
         updateSummary();
         updatePrice();
@@ -241,12 +271,14 @@
             if (cb.disabled) return;
             cb.checked = !cb.checked;
             wrapper.classList.toggle('selected', cb.checked);
+            lastChangedId = id;
             onCalcChange();
         });
 
         cb.addEventListener('change', function () {
             if (this.disabled) return;
             wrapper.classList.toggle('selected', this.checked);
+            lastChangedId = id;
             onCalcChange();
         });
     });

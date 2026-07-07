@@ -1054,7 +1054,8 @@ section {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-start;
+    text-align: left;
     padding: 2rem;
     transition: var(--transition);
     opacity: 0.9;
@@ -2049,7 +2050,6 @@ section {
 .svc-head { display:flex; justify-content:space-between; align-items:center; width:100%; gap:0.5rem; }
 .calculator-form .service-name { font-weight:600; color:var(--text-dark); font-size:0.95rem; display:flex; align-items:center; flex-wrap:wrap; gap:0.4rem; }
 .svc-desc { font-size:0.8rem; color:#6c757d; line-height:1.45; font-weight:400; }
-.svc-price { font-weight:700; color:var(--primary-color); font-size:0.85rem; white-space:nowrap; }
 .required-note { font-size:0.72rem; color:var(--primary-color); font-weight:600; background:rgba(220,20,60,0.1); padding:0.15rem 0.5rem; border-radius:20px; display:inline-flex; align-items:center; gap:0.3rem; margin-left:0.3rem; }
 .req-badge { font-size:0.72rem; color:var(--primary-color); font-weight:600; background:rgba(220,20,60,0.1); padding:0.1rem 0.4rem; border-radius:20px; }
 .svc-range { font-weight:700; color:var(--primary-color); font-size:0.88rem; white-space:nowrap; }
