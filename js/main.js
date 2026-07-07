@@ -519,4 +519,61 @@
         document.body.classList.remove('printing');
     });
 
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        const statusEl = document.getElementById('cfStatus');
+        const servicesField = document.getElementById('cfServices');
+        const submitBtn = contactForm.querySelector('button[type="submit"]');
+        const PHONE = '+48 537 897 951';
+
+        function collectQuote() {
+            if (!servicesField) return;
+            const items = Array.from(document.querySelectorAll('#selectedServices li'))
+                .map(li => li.textContent.replace(/\s+/g, ' ').trim())
+                .filter(text => text && !/Brak wybranych/i.test(text));
+            const total = (document.getElementById('totalPrice') || {}).textContent || '';
+            const size = (document.getElementById('summarySize') || {}).textContent || '';
+            servicesField.value = items.length
+                ? `Rozmiar auta: ${size}\n- ${items.join('\n- ')}\nWycena: ${total}`
+                : 'Klient nie skorzystał z kalkulatora.';
+        }
+
+        function setStatus(message, type) {
+            if (!statusEl) return;
+            statusEl.textContent = message;
+            statusEl.className = 'contact-status' + (type ? ' is-' + type : '');
+        }
+
+        contactForm.addEventListener('submit', async function (e) {
+            e.preventDefault();
+            collectQuote();
+
+            const original = submitBtn.innerHTML;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Wysyłanie…';
+            setStatus('', null);
+
+            try {
+                const response = await fetch(contactForm.action, {
+                    method: 'POST',
+                    body: new FormData(contactForm),
+                    headers: { Accept: 'application/json' }
+                });
+                const data = await response.json().catch(() => ({}));
+
+                if (response.ok && data.success) {
+                    setStatus('Dziękujemy! Wiadomość wysłana — odezwiemy się wkrótce.', 'success');
+                    contactForm.reset();
+                } else {
+                    setStatus((data && data.message) || `Nie udało się wysłać. Zadzwoń: ${PHONE}.`, 'error');
+                }
+            } catch (err) {
+                setStatus(`Brak połączenia. Spróbuj ponownie lub zadzwoń: ${PHONE}.`, 'error');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = original;
+            }
+        });
+    }
+
 })();
