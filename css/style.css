@@ -642,6 +642,12 @@ section {
     color: white;
 }
 
+.service-icon svg {
+    width: 40px;
+    height: 40px;
+    color: #fff;
+}
+
 .service-title {
     font-size: 1.5rem;
     font-weight: 700;
