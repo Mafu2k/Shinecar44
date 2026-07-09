@@ -1992,6 +1992,12 @@ section {
     gap: 0.6rem;
 }
 
+.calc-cat-icon {
+    width: 1.2em;
+    height: 1.2em;
+    flex-shrink: 0;
+}
+
 .calc-group-arrow {
     transition: transform 0.3s ease;
 }

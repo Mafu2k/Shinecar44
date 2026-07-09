@@ -47,10 +47,14 @@
     };
 
     const SIZES = {
-        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 } },
-        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 } },
-        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 } },
+        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 }, minMult: 1.0, maxMult: 0.65 },
+        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 }, minMult: 1.2, maxMult: 0.85 },
+        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 }, minMult: 1.5, maxMult: 1.2 },
     };
+
+    function round50(value) {
+        return Math.round(value / 50) * 50;
+    }
 
     let currentSize = 'sredni';
 
@@ -212,8 +216,25 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
-        const totalMin = priced.reduce((sum, id) => sum + SERVICES[id].min, 0);
-        const totalMax = priced.reduce((sum, id) => sum + SERVICES[id].max, 0);
+        const size = SIZES[currentSize];
+
+        // Komplet ma stałą cenę per rozmiar (nie podlega mnożnikowi).
+        // Pozostałe usługi: suma bazowa × mnożnik rozmiaru (wg cennika Excel).
+        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
+        priced.forEach(id => {
+            if (id === 'svc-komplet') {
+                kompletMin += SERVICES[id].min;
+                kompletMax += SERVICES[id].max;
+            } else {
+                otherMin += SERVICES[id].min;
+                otherMax += SERVICES[id].max;
+            }
+        });
+
+        let totalMin = kompletMin + round50(otherMin * size.minMult);
+        let totalMax = kompletMax + round50(otherMax * size.maxMult);
+        if (totalMax < totalMin) totalMax = totalMin;
+
         if (priced.length === 0 && hasIndividual) {
             totalEl.textContent = "Wycena indywidualna";
         } else if (hasIndividual) {
