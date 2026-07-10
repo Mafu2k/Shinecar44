@@ -237,11 +237,12 @@
         });
 
         // Mnożnik rozmiaru działa na sumę usług (Komplet ma cenę stałą).
-        // Przy małych autach maxMult < minMult, więc granice trzeba uporządkować.
-        const scaledA = otherMin * size.minMult;
-        const scaledB = otherMax * size.maxMult;
-        const totalMin = kompletMin + round10(Math.min(scaledA, scaledB));
-        const totalMax = kompletMax + round10(Math.max(scaledA, scaledB));
+        // minMult >= 1.0, więc dolna granica nigdy nie schodzi poniżej cennika.
+        // Przy wąskich widełkach maxMult może zejść poniżej dolnej granicy — wtedy wycena jest punktowa.
+        const lower = otherMin * size.minMult;
+        const upper = Math.max(lower, otherMax * size.maxMult);
+        const totalMin = kompletMin + round10(lower);
+        const totalMax = kompletMax + round10(upper);
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
