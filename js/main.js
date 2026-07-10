@@ -238,10 +238,19 @@
 
         // Cena finalna jak w Excelu: suma usług × mnożniki rozmiaru, zaokrąglenie do 50 zł.
         // Komplet ma cenę stałą per rozmiar i nie podlega mnożnikowi.
+        // Przy wąskich widełkach mnożnik górny (np. ×0.65 dla małych aut) potrafi zwinąć
+        // zakres do jednej kwoty — wtedy obie granice liczymy mnożnikiem dolnym,
+        // żeby klient zawsze widział pełny przedział.
         const a = otherMin * size.minMult;
         const b = otherMax * size.maxMult;
-        const totalMin = kompletMin + round50(Math.min(a, b));
-        const totalMax = kompletMax + round50(Math.max(a, b));
+        let lo = round50(Math.min(a, b));
+        let hi = round50(Math.max(a, b));
+        if (hi <= lo) {
+            lo = round50(otherMin * size.minMult);
+            hi = round50(otherMax * size.minMult);
+        }
+        const totalMin = kompletMin + lo;
+        const totalMax = kompletMax + hi;
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
