@@ -47,10 +47,14 @@
     };
 
     const SIZES = {
-        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 } },
-        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 } },
-        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 } },
+        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 }, minMult: 1.0, maxMult: 0.65 },
+        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 }, minMult: 1.2, maxMult: 0.85 },
+        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 }, minMult: 1.5, maxMult: 1.2 },
     };
+
+    function round50(value) {
+        return Math.round(value / 50) * 50;
+    }
 
     function formatRange(min, max) {
         return min === max ? `${min} zł` : `${min}–${max} zł`;
@@ -219,12 +223,25 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
+        const size = SIZES[currentSize];
 
-        let totalMin = 0, totalMax = 0;
+        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
         priced.forEach(id => {
-            totalMin += SERVICES[id].min;
-            totalMax += SERVICES[id].max;
+            if (id === 'svc-komplet') {
+                kompletMin += SERVICES[id].min;
+                kompletMax += SERVICES[id].max;
+            } else {
+                otherMin += SERVICES[id].min;
+                otherMax += SERVICES[id].max;
+            }
         });
+
+        // Cena finalna jak w Excelu: suma usług × mnożniki rozmiaru, zaokrąglenie do 50 zł.
+        // Komplet ma cenę stałą per rozmiar i nie podlega mnożnikowi.
+        const a = otherMin * size.minMult;
+        const b = otherMax * size.maxMult;
+        const totalMin = kompletMin + round50(Math.min(a, b));
+        const totalMax = kompletMax + round50(Math.max(a, b));
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
