@@ -56,27 +56,16 @@
         return Math.round(value / 10) * 10;
     }
 
-    // Komplet ma stałą cenę per rozmiar. Reszta: mnożniki z cennika (min ×minMult, max ×maxMult).
-    // Przy małych autach maxMult bywa niższy od minMult, więc granice trzeba uporządkować.
-    function adjustedPrice(id) {
-        const svc = SERVICES[id];
-        if (id === 'svc-komplet') {
-            return { min: svc.min, max: svc.max };
-        }
-        const size = SIZES[currentSize];
-        const a = svc.min * size.minMult;
-        const b = svc.max * size.maxMult;
-        return { min: round10(Math.min(a, b)), max: round10(Math.max(a, b)) };
-    }
-
     function formatRange(min, max) {
         return min === max ? `${min} zł` : `${min}–${max} zł`;
     }
 
+    // Pozycje pokazują ceny bazowe z cennika (Komplet ma stałą cenę per rozmiar,
+    // ustawianą w applySize). Mnożnik rozmiaru dotyczy tylko ceny finalnej.
     function priceLabel(id) {
-        if (SERVICES[id].individual) return 'Wycena indyw.';
-        const p = adjustedPrice(id);
-        return formatRange(p.min, p.max);
+        const svc = SERVICES[id];
+        if (svc.individual) return 'Wycena indyw.';
+        return formatRange(svc.min, svc.max);
     }
 
     let currentSize = 'sredni';
@@ -234,13 +223,25 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
+        const size = SIZES[currentSize];
 
-        let totalMin = 0, totalMax = 0;
+        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
         priced.forEach(id => {
-            const p = adjustedPrice(id);
-            totalMin += p.min;
-            totalMax += p.max;
+            if (id === 'svc-komplet') {
+                kompletMin += SERVICES[id].min;
+                kompletMax += SERVICES[id].max;
+            } else {
+                otherMin += SERVICES[id].min;
+                otherMax += SERVICES[id].max;
+            }
         });
+
+        // Mnożnik rozmiaru działa na sumę usług (Komplet ma cenę stałą).
+        // Przy małych autach maxMult < minMult, więc granice trzeba uporządkować.
+        const scaledA = otherMin * size.minMult;
+        const scaledB = otherMax * size.maxMult;
+        const totalMin = kompletMin + round10(Math.min(scaledA, scaledB));
+        const totalMax = kompletMax + round10(Math.max(scaledA, scaledB));
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
