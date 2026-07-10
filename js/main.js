@@ -52,8 +52,31 @@
         duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 }, minMult: 1.5, maxMult: 1.2 },
     };
 
-    function round50(value) {
-        return Math.round(value / 50) * 50;
+    function round10(value) {
+        return Math.round(value / 10) * 10;
+    }
+
+    // Komplet ma stałą cenę per rozmiar. Reszta: mnożniki z cennika (min ×minMult, max ×maxMult).
+    // Przy małych autach maxMult bywa niższy od minMult, więc granice trzeba uporządkować.
+    function adjustedPrice(id) {
+        const svc = SERVICES[id];
+        if (id === 'svc-komplet') {
+            return { min: svc.min, max: svc.max };
+        }
+        const size = SIZES[currentSize];
+        const a = svc.min * size.minMult;
+        const b = svc.max * size.maxMult;
+        return { min: round10(Math.min(a, b)), max: round10(Math.max(a, b)) };
+    }
+
+    function formatRange(min, max) {
+        return min === max ? `${min} zł` : `${min}–${max} zł`;
+    }
+
+    function priceLabel(id) {
+        if (SERVICES[id].individual) return 'Wycena indyw.';
+        const p = adjustedPrice(id);
+        return formatRange(p.min, p.max);
     }
 
     let currentSize = 'sredni';
@@ -190,7 +213,10 @@
                 const cb = document.getElementById(id);
                 const isReq = cb && cb.disabled;
                 const badge = isReq ? ' <small class="req-badge"><i class="fas fa-lock"></i> wymagane</small>' : '';
-                return `<li><span>${svc.name}${badge}</span></li>`;
+                return `<li>
+                    <span>${svc.name}${badge}</span>
+                    <span class="svc-range">${priceLabel(id)}</span>
+                </li>`;
             }).join('');
         }
     }
@@ -208,31 +234,24 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
-        const size = SIZES[currentSize];
 
-        // Komplet ma stałą cenę per rozmiar (nie podlega mnożnikowi).
-        // Pozostałe usługi: suma bazowa × mnożnik rozmiaru (wg cennika Excel).
-        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
+        let totalMin = 0, totalMax = 0;
         priced.forEach(id => {
-            if (id === 'svc-komplet') {
-                kompletMin += SERVICES[id].min;
-                kompletMax += SERVICES[id].max;
-            } else {
-                otherMin += SERVICES[id].min;
-                otherMax += SERVICES[id].max;
-            }
+            const p = adjustedPrice(id);
+            totalMin += p.min;
+            totalMax += p.max;
         });
 
-        let totalMin = kompletMin + round50(otherMin * size.minMult);
-        let totalMax = kompletMax + round50(otherMax * size.maxMult);
-        if (totalMax < totalMin) totalMax = totalMin;
+        const totalStr = totalMin === totalMax
+            ? `${totalMin} zł`
+            : `od ${totalMin} do ${totalMax} zł`;
 
         if (priced.length === 0 && hasIndividual) {
             totalEl.textContent = "Wycena indywidualna";
         } else if (hasIndividual) {
-            totalEl.textContent = `od ${totalMin} do ${totalMax} zł + wycena indyw.`;
+            totalEl.textContent = `${totalStr} + wycena indyw.`;
         } else {
-            totalEl.textContent = `od ${totalMin} do ${totalMax} zł`;
+            totalEl.textContent = totalStr;
         }
     }
 
