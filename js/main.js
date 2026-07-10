@@ -47,14 +47,10 @@
     };
 
     const SIZES = {
-        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 }, minMult: 1.0, maxMult: 0.65 },
-        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 }, minMult: 1.2, maxMult: 0.85 },
-        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 }, minMult: 1.5, maxMult: 1.2 },
+        maly:   { label: 'Małe',    komplet: { min: 150, max: 250 } },
+        sredni: { label: 'Średnie', komplet: { min: 250, max: 350 } },
+        duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 } },
     };
-
-    function round10(value) {
-        return Math.round(value / 10) * 10;
-    }
 
     function formatRange(min, max) {
         return min === max ? `${min} zł` : `${min}–${max} zł`;
@@ -223,26 +219,12 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
-        const size = SIZES[currentSize];
 
-        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
+        let totalMin = 0, totalMax = 0;
         priced.forEach(id => {
-            if (id === 'svc-komplet') {
-                kompletMin += SERVICES[id].min;
-                kompletMax += SERVICES[id].max;
-            } else {
-                otherMin += SERVICES[id].min;
-                otherMax += SERVICES[id].max;
-            }
+            totalMin += SERVICES[id].min;
+            totalMax += SERVICES[id].max;
         });
-
-        // Mnożnik rozmiaru działa na sumę usług (Komplet ma cenę stałą).
-        // minMult >= 1.0, więc dolna granica nigdy nie schodzi poniżej cennika.
-        // Przy wąskich widełkach maxMult może zejść poniżej dolnej granicy — wtedy wycena jest punktowa.
-        const lower = otherMin * size.minMult;
-        const upper = Math.max(lower, otherMax * size.maxMult);
-        const totalMin = kompletMin + round10(lower);
-        const totalMax = kompletMax + round10(upper);
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
