@@ -90,10 +90,6 @@
         return 'cb-' + svcId.replace('svc-', '');
     }
 
-    function priceLabel(svc) {
-        return svc.individual ? 'Wycena indyw.' : `${svc.min}–${svc.max} zł`;
-    }
-
     function decorateServices() {
         Object.keys(SERVICES).forEach(id => {
             const wrapper = document.getElementById(getWrapperId(id));
@@ -194,11 +190,7 @@
                 const cb = document.getElementById(id);
                 const isReq = cb && cb.disabled;
                 const badge = isReq ? ' <small class="req-badge"><i class="fas fa-lock"></i> wymagane</small>' : '';
-                const priceStr = priceLabel(svc);
-                return `<li>
-                    <span>${svc.name}${badge}</span>
-                    <span class="svc-range">${priceStr}</span>
-                </li>`;
+                return `<li><span>${svc.name}${badge}</span></li>`;
             }).join('');
         }
     }
