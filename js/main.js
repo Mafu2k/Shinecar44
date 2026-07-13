@@ -52,20 +52,32 @@
         duzy:   { label: 'Duże',    komplet: { min: 350, max: 450 }, minMult: 1.5, maxMult: 1.2 },
     };
 
-    function round50(value) {
-        return Math.round(value / 50) * 50;
+    function round10(value) {
+        return Math.round(value / 10) * 10;
+    }
+
+    // Ceny per usługa przeliczone pod rozmiar auta (mnożniki z cennika: kol. Min/Max).
+    // Dla małych aut mnożnik górny (0.65) bywa niższy od dolnego (1.0), więc granice
+    // trzeba uporządkować. Komplet ma stałą cenę per rozmiar (ustawia ją applySize).
+    function adjustedPrice(id) {
+        const svc = SERVICES[id];
+        if (id === 'svc-komplet') {
+            return { min: svc.min, max: svc.max };
+        }
+        const size = SIZES[currentSize];
+        const a = svc.min * size.minMult;
+        const b = svc.max * size.maxMult;
+        return { min: round10(Math.min(a, b)), max: round10(Math.max(a, b)) };
     }
 
     function formatRange(min, max) {
         return min === max ? `${min} zł` : `${min}–${max} zł`;
     }
 
-    // Pozycje pokazują ceny bazowe z cennika (Komplet ma stałą cenę per rozmiar,
-    // ustawianą w applySize). Mnożnik rozmiaru dotyczy tylko ceny finalnej.
     function priceLabel(id) {
-        const svc = SERVICES[id];
-        if (svc.individual) return 'Wycena indyw.';
-        return formatRange(svc.min, svc.max);
+        if (SERVICES[id].individual) return 'Wycena indyw.';
+        const p = adjustedPrice(id);
+        return formatRange(p.min, p.max);
     }
 
     let currentSize = 'sredni';
@@ -223,34 +235,15 @@
 
         const priced = checked.filter(id => !SERVICES[id].individual);
         const hasIndividual = checked.some(id => SERVICES[id].individual);
-        const size = SIZES[currentSize];
 
-        let kompletMin = 0, kompletMax = 0, otherMin = 0, otherMax = 0;
+        // Wycena = dokładna suma cen pozycji widocznych w podsumowaniu
+        // (już przeliczonych pod rozmiar auta) — bez mnożnika końcowego.
+        let totalMin = 0, totalMax = 0;
         priced.forEach(id => {
-            if (id === 'svc-komplet') {
-                kompletMin += SERVICES[id].min;
-                kompletMax += SERVICES[id].max;
-            } else {
-                otherMin += SERVICES[id].min;
-                otherMax += SERVICES[id].max;
-            }
+            const p = adjustedPrice(id);
+            totalMin += p.min;
+            totalMax += p.max;
         });
-
-        // Cena finalna jak w Excelu: suma usług × mnożniki rozmiaru, zaokrąglenie do 50 zł.
-        // Komplet ma cenę stałą per rozmiar i nie podlega mnożnikowi.
-        // Przy wąskich widełkach mnożnik górny (np. ×0.65 dla małych aut) potrafi zwinąć
-        // zakres do jednej kwoty — wtedy obie granice liczymy mnożnikiem dolnym,
-        // żeby klient zawsze widział pełny przedział.
-        const a = otherMin * size.minMult;
-        const b = otherMax * size.maxMult;
-        let lo = round50(Math.min(a, b));
-        let hi = round50(Math.max(a, b));
-        if (hi <= lo) {
-            lo = round50(otherMin * size.minMult);
-            hi = round50(otherMax * size.minMult);
-        }
-        const totalMin = kompletMin + lo;
-        const totalMax = kompletMax + hi;
 
         const totalStr = totalMin === totalMax
             ? `${totalMin} zł`
