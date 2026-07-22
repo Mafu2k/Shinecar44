@@ -2147,3 +2147,17 @@ section {
 @media (max-width: 576px) {
     .contact-form-wrapper { padding: 1.5rem; }
 }
+
+/* Baner cookies — kolory pod markę */
+#cc-main {
+    --cc-btn-primary-bg: var(--primary-color);
+    --cc-btn-primary-border-color: var(--primary-color);
+    --cc-btn-primary-hover-bg: #b01030;
+    --cc-btn-primary-hover-border-color: #b01030;
+    --cc-toggle-on-bg: var(--primary-color);
+    --cc-link-color: var(--primary-color);
+    font-family: inherit;
+}
+
+.footer-sep { opacity: 0.5; margin: 0 0.35rem; }
+.footer-credit a { cursor: pointer; }
