@@ -641,8 +641,9 @@
                 const data = await response.json().catch(() => ({}));
 
                 if (response.ok && data.success) {
-                    window.location.href = 'dziekujemy.html';
-                    return;
+                    setStatus('Dziękujemy! Wiadomość wysłana — odezwiemy się wkrótce.', 'success');
+                    contactForm.reset();
+                    clearQuote();
                 } else {
                     setStatus((data && data.message) || `Nie udało się wysłać. Zadzwoń: ${PHONE}.`, 'error');
                 }
