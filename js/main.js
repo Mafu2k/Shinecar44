@@ -39,7 +39,7 @@
         'svc-pol-2step':         { name: 'Polerowanie 2-step',    min: 850,  max: 1300, desc: 'Dwuetapowa korekta — usunięcie głębszych rys i hologramów, mocny efekt lustra.' },
         'svc-pelna-korekta':     { name: 'Pełna korekta',         min: 900,  max: 2000, desc: 'Wieloetapowa korekta przywracająca maksymalny połysk; w pakiecie renowacja reflektorów.' },
         'svc-wosk':              { name: 'Wosk',                  min: 150,  max: 350,  desc: 'Naturalny lub syntetyczny wosk dający połysk i kilkumiesięczną ochronę.' },
-        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',    min: 50,   max: 600,  desc: 'Powłoka ceramiczna z ochroną ok. 1,5 roku — efekt hydrofobowy i głębia lakieru.' },
+        'svc-powloka-15':        { name: 'Powłoka 1,5-roczna',    min: 200,  max: 600,  minBySize: { maly: 200, sredni: 350, duzy: 500 }, desc: 'Powłoka ceramiczna z ochroną ok. 1,5 roku — efekt hydrofobowy i głębia lakieru.' },
         'svc-powloka-3':         { name: 'Powłoka 3-letnia',      min: 500,  max: 750,  desc: 'Powłoka ceramiczna z ochroną do 3 lat — trwała hydrofobowość i twardość.' },
         'svc-powloka-5':         { name: 'Powłoka 5-letnia',      min: 600,  max: 900,  desc: 'Powłoka ceramiczna z ochroną do 5 lat — najwyższa trwałość i odporność.' },
         'svc-ppf':               { name: 'Folia PPF',             min: 0,    max: 0, individual: true, desc: 'Bezbarwna folia ochronna chroniąca lakier przed odpryskami i rysami.' },
@@ -59,13 +59,14 @@
     // Ceny per usługa przeliczone pod rozmiar auta (mnożniki z cennika: kol. Min/Max).
     // Dla małych aut mnożnik górny (0.65) bywa niższy od dolnego (1.0), więc granice
     // trzeba uporządkować. Komplet ma stałą cenę per rozmiar (ustawia ją applySize).
+    // minBySize nadpisuje cenę minimalną dla danego rozmiaru auta (bez mnożnika).
     function adjustedPrice(id) {
         const svc = SERVICES[id];
         if (id === 'svc-komplet') {
             return { min: svc.min, max: svc.max };
         }
         const size = SIZES[currentSize];
-        const a = svc.min * size.minMult;
+        const a = svc.minBySize ? svc.minBySize[currentSize] : svc.min * size.minMult;
         const b = svc.max * size.maxMult;
         return { min: round10(Math.min(a, b)), max: round10(Math.max(a, b)) };
     }
